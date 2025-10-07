@@ -1,2 +1,2 @@
-# Cafe_Galer-a_Project
+# Cafe_Galeria_Project
 Proyecto de la materia Trabajo de Campo.
