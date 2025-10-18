@@ -1,0 +1,278 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Fondo principal ===== */
+body {
+  background-color: #F8F7F1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== Contenedor general ===== */
+.login-container {
+  display: flex;
+  width: 900px;
+  height: 550px;
+  background-color: #FFFEFE;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(78, 67, 58, 0.1);
+  overflow: hidden;
+  position: relative;
+  animation: container-appear 0.8s ease-out;
+}
+
+@keyframes container-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Lado izquierdo ===== */
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, #6B5A4F 0%, #4E433A 100%);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #F8F7F1;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-left::before,
+.login-left::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 254, 254, 0.05);
+  animation: float 15s infinite ease-in-out;
+}
+
+.login-left::before {
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  right: -100px;
+}
+
+.login-left::after {
+  width: 200px;
+  height: 200px;
+  bottom: -50px;
+  left: -50px;
+  animation-duration: 12s;
+  animation-direction: reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -15px) rotate(5deg); }
+  66% { transform: translate(-5px, 10px) rotate(-3deg); }
+}
+
+/* ===== Textos izquierda ===== */
+.welcome-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  z-index: 1;
+  animation: text-appear 0.8s ease-out 0.2s both;
+}
+
+.welcome-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  z-index: 1;
+  animation: text-appear 0.8s ease-out 0.4s both;
+}
+
+@keyframes text-appear {
+  0% { opacity: 0; transform: translateX(-20px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* ===== Lado derecho ===== */
+.login-right {
+  flex: 1;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #FFFEFE;
+}
+
+/* ===== Encabezado del formulario ===== */
+.login-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.login-header h2 {
+  color: #4E433A;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  animation: title-appear 0.8s ease-out 0.6s both;
+}
+
+.login-header p {
+  color: #6B5A4F;
+  animation: title-appear 0.8s ease-out 0.7s both;
+}
+
+@keyframes title-appear {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Campos del formulario ===== */
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+  animation: form-appear 0.8s ease-out 0.8s both;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #4E433A;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #F2F2F2;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #F8F7F1;
+  transition: all 0.3s;
+}
+
+/* === Contraseña borrosa === */
+input.blurred {
+  color: transparent;
+  text-shadow: 0 0 6px rgba(78, 67, 58, 0.8);
+  filter: blur(2px);
+  caret-color: #4E433A;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #6B5A4F;
+  background-color: #FFFEFE;
+  box-shadow: 0 0 0 3px rgba(107, 90, 79, 0.1);
+}
+
+.focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #6B5A4F;
+  transition: width 0.3s;
+}
+
+/* ===== Mostrar/ocultar contraseña ===== */
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 42px;
+  background: none;
+  border: none;
+  color: #6B5A4F;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.password-toggle:hover {
+  color: #4E433A;
+}
+
+/* ===== Recordarme y olvido contraseña ===== */
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.forgot-password {
+  color: #6B5A4F;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.forgot-password:hover {
+  color: #4E433A;
+  text-decoration: underline;
+}
+
+/* ===== Botón ===== */
+.login-button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #6B5A4F 0%, #4E433A 100%);
+  color: #FFFEFE;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 15px rgba(78, 67, 58, 0.2);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+/* ===== Enlace de registro ===== */
+.signup-link {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.signup-link a {
+  color: #6B5A4F;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.signup-link a:hover {
+  color: #4E433A;
+  text-decoration: underline;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 950px) {
+  .login-container {
+    width: 90%;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .login-left,
+  .login-right {
+    padding: 30px;
+  }
+}
