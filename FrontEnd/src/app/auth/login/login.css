@@ -225,7 +225,7 @@ input.blurred {
 .login-button {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #6B5A4F 0%, #4E433A 100%);
+  background: linear-gradient(135deg, #6B5A4F 0%, #4e3a3a 100%);
   color: #FFFEFE;
   border: none;
   border-radius: 10px;
@@ -259,7 +259,7 @@ input.blurred {
 }
 
 .signup-link a:hover {
-  color: #4E433A;
+  color: #484e3a;
   text-decoration: underline;
 }
 
@@ -275,4 +275,11 @@ input.blurred {
   .login-right {
     padding: 30px;
   }
+}
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #F8F7F1;
 }
