@@ -1,1 +1,7 @@
-<router-outlet></router-outlet>
+<div class="app-container">
+  <!-- Sidebar visible en todas las páginas excepto login -->
+  <app-sidebar *ngIf="showSidebar"></app-sidebar>
+
+  <!-- Aquí se carga el contenido principal -->
+  <router-outlet></router-outlet>
+</div>

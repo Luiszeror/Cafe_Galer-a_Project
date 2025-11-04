@@ -1,0 +1,100 @@
+.home-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Ocupa toda la pantalla */
+  background-color: #F9F6F1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Marca de agua */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px; /* puedes ajustar este tamaño */
+  height: 400px;
+  background-image: url('../../../assets/logo-agua.png');
+  background-repeat: no-repeat; /* evita que se repita */
+  background-position: center; /* centra la imagen */
+  background-size: contain; /* muestra toda la imagen completa */
+  opacity: 0.45; /* hace la marca de agua más sutil */
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* evita interferir con clics */
+}
+
+
+
+
+.about-btn {
+  position: fixed;       /* Fija el botón en la pantalla, no depende del contenido */
+  bottom: 20px;          /* Distancia desde la parte inferior */
+  right: 20px;           /* Distancia desde el lado derecho */
+  background-color: #635249;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  z-index: 300;          /* Asegura que quede encima del contenido */
+}
+
+.about-btn:hover {
+  background-color: #4d3d34;
+}
+
+/* Modal (ventana flotante) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal {
+  background-color: #fff;
+  color: #333;
+  border-radius: 10px;
+  padding: 20px 30px;
+  width: 400px;
+  max-width: 80%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal h2 {
+  margin-top: 0;
+  color: #4d3d34;
+}
+
+.close-btn {
+  background-color: #635249;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.close-btn:hover {
+  background-color: #4d3d34;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

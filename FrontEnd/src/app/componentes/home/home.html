@@ -1,0 +1,21 @@
+<div class="home-container">
+  <div class="watermark"></div>
+
+  <!-- Botón para abrir la ventana modal -->
+  <button class="about-btn" (click)="toggleAbout()">Acerca de</button>
+
+  <!-- Modal flotante -->
+  <div class="modal-overlay" *ngIf="showAbout">
+    <div class="modal">
+      <h2>Acerca de Nosotros</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+        Sed eget eros id mauris faucibus aliquet. Suspendisse potenti. 
+        Integer gravida nisl id nisl hendrerit, quis convallis justo bibendum. 
+        Curabitur et urna a sapien tincidunt commodo. 
+        Proin eget dolor non justo malesuada accumsan.
+      </p>
+      <button class="close-btn" (click)="toggleAbout()">Cerrar</button>
+    </div>
+  </div>
+</div>
