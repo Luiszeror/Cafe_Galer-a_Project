@@ -1,0 +1,53 @@
+<div class="config-container">
+  <h2>⚙️ Configuración</h2>
+
+  <section class="section">
+    <h3>Datos del Establecimiento</h3>
+
+    <div class="form-group">
+      <label>Nombre del Café Galería</label>
+      <input type="text" [(ngModel)]="establecimiento.nombre" />
+    </div>
+
+    <div class="form-group">
+      <label>Dirección</label>
+      <input type="text" [(ngModel)]="establecimiento.direccion" />
+    </div>
+
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" [(ngModel)]="establecimiento.telefono" />
+    </div>
+
+    <button class="btn-guardar" (click)="guardarCambios()">💾 Guardar Cambios</button>
+  </section>
+
+  <section class="section">
+    <h3>Gestión de Usuarios</h3>
+
+    <button class="btn-add" (click)="agregarUsuario()">➕ Añadir Usuario</button>
+
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.rol }}</td>
+          <td>
+            <button class="btn-eliminar" (click)="eliminarUsuario(usuario)">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+

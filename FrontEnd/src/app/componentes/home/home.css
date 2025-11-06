@@ -21,7 +21,7 @@
   background-repeat: no-repeat; /* evita que se repita */
   background-position: center; /* centra la imagen */
   background-size: contain; /* muestra toda la imagen completa */
-  opacity: 0.45; /* hace la marca de agua más sutil */
+  opacity: 1; /* hace la marca de agua más sutil */
   transform: translate(-50%, -50%);
   pointer-events: none; /* evita interferir con clics */
 }

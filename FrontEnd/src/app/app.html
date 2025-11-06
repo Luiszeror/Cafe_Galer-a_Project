@@ -2,6 +2,8 @@
   <!-- Sidebar visible en todas las páginas excepto login -->
   <app-sidebar *ngIf="showSidebar"></app-sidebar>
 
-  <!-- Aquí se carga el contenido principal -->
-  <router-outlet></router-outlet>
+  <!-- Contenido principal dinámico -->
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
 </div>

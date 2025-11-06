@@ -1,0 +1,23 @@
+/* Contenedor principal con flexbox */
+.app-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar (ocupa su espacio natural) */
+app-sidebar {
+  flex: 0 0 60px; /* ancho base del sidebar */
+  height: 100vh;
+  background-color: #ffffff;
+  color: white;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+/* Contenido principal que se ajusta automáticamente */
+.main-content {
+  flex: 1; /* ocupa todo el espacio restante */
+  transition: margin 0.3s ease;
+}

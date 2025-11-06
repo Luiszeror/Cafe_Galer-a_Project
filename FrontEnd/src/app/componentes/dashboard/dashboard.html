@@ -1,1 +1,75 @@
-<p>dashboard works!</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body>
+  <div class="head">
+ <h1>Dashboard</h1>
+
+  <div class="header-right">
+    <div class="search-box">
+      <input type="text" placeholder="Buscar..." />
+      <i class="bi bi-search"></i>
+    </div>
+
+    <i class="bi bi-bell notification-icon"></i>
+
+    <i class="bi bi-person-circle user-icon"></i>
+  </div>
+  </div>
+  <div class="contenido">
+
+  <main class="dashboard">
+    <!-- Fila 1 -->
+    <div class="cards">
+      <div class="card">
+        <h3>Ventas Diarias (Café)</h3>
+        <h1>$350.50</h1>
+        <p class="success">↑ +12% respecto ayer</p>
+      </div>
+
+      <div class="card">
+        <h3>Obras en Exhibición</h3>
+        <h1>25</h1>
+        <p class="info">+2 nuevas esta semana</p>
+      </div>
+
+      <div class="card warning">
+        <h3>Insumos Bajos</h3>
+        <h1>3 ítems</h1>
+        <p>⚠️ Requiere atención</p>
+      </div>
+    </div>
+
+    <!-- Fila 2 -->
+    <div class="cards mid">
+      <div class="card">
+        <h3>Pedidos Pendientes</h3>
+        <h1>5</h1>
+        <p>Para hoy</p>
+      </div>
+
+      <div class="card">
+        <h3>Ventas Semanales</h3>
+        <img
+          src="assets/chart-placeholder.png"
+          alt="Gráfico de ventas"
+          class="chart"
+        />
+      </div>
+    </div>
+
+    <!-- Fila 3 -->
+    <div class="card activity">
+      <h3>Actividad Reciente</h3>
+      <p>Hace 5 min - Venta de pintura "Paisaje Tropical"</p>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

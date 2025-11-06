@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./sidebar.css']
 })
 export class SidebarComponent {
-  isCollapsed = false;
+  isCollapsed = true;
   showSidebar = true;
 
   constructor(private router: Router) {
