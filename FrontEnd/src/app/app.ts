@@ -17,7 +17,11 @@ export class App {
   protected readonly title = signal('frontEnd');
   showSidebar = true;
 
-  constructor(private router: Router) {
+ constructor(private router: Router) {
+    // Verifica ruta inicial
+    this.showSidebar = !this.router.url.includes('/login');
+
+    // Escucha cambios de ruta
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.showSidebar = !event.url.includes('/login');

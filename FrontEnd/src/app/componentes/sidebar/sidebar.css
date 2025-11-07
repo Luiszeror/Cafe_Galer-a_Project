@@ -13,6 +13,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+   font-family: 'Segoe UI', Arial, sans-serif; /* Fuente estandarizada */
+  font-weight: 500; 
 }
 
 .sidebar.collapsed {
@@ -65,13 +67,27 @@
   margin-top: 5px;
 }
 
+.sidebar-header h2 {
+  margin-top: 80px; /* espacio para el logo */
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
 /* Encabezado */
 .sidebar-header {
   padding: 1rem;
   background-color: #4d3d34;
   border-bottom: 1px solid #8c7a6a;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('../../../assets/logo-agua.png');
+  background-repeat: no-repeat;
+  background-position: center 10px;
+  background-size: 120px auto;
 }
+
 
 /* Menú */
 .menu {
@@ -121,3 +137,27 @@
 .logout-btn:hover {
   color: #ffcccc;
 }
+
+.menu a.active {
+  background-color: #00796b;
+  color: white;
+  border-radius: 6px;
+}
+.menu a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.2s;
+}
+.menu a:hover {
+  background-color: #b2dfdb;
+}
+h2 {
+  font-size: 1.5rem;
+  color: #4a3f35;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #d2c6b2;
+  padding-bottom: 5px;
+}
+

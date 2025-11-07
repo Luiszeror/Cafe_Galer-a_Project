@@ -15,13 +15,16 @@ export class SidebarComponent {
   showSidebar = true;
 
   constructor(private router: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        // Oculta el sidebar en la ruta /login
-        this.showSidebar = !event.url.includes('/login');
-      }
-    });
-  }
+  // Verificar inmediatamente la ruta actual al iniciar
+  this.showSidebar = !this.router.url.includes('/login');
+
+  // Suscribirse a los eventos de navegación
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationEnd) {
+      this.showSidebar = !event.url.includes('/login');
+    }
+  });
+}
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;

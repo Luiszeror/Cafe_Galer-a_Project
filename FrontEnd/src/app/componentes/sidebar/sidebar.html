@@ -1,5 +1,5 @@
 <!-- sidebar.component.html -->
-<div class="sidebar" *ngIf="showSidebar" [class.collapsed]="isCollapsed">
+<div class="sidebar" [class.collapsed]="isCollapsed">
   <!-- Botón visible siempre -->
   <button class="toggle-btn" (click)="toggleSidebar()" [class.floating]="isCollapsed">
     ☰
@@ -14,17 +14,18 @@
     </div>
 
     <!-- Encabezado -->
-    <div class="sidebar-header">
-      <h2>Café Galería</h2>
+   <div class="sidebar-header">
+      <h2> </h2>
     </div>
-
     <!-- Menú -->
     <ul class="menu">
-      <li><a routerLink="/home">🏠 <span>Inicio</span></a></li>
-      <li><a routerLink="/productos">☕ <span>Productos</span></a></li>
-      <li><a routerLink="/galeria">🖼️ <span>Galería</span></a></li>
-      <li><a routerLink="/contacto">📞 <span>Contacto</span></a></li>
-    </ul>
+  <li><a routerLink="/home" routerLinkActive="active"><span>Inicio</span></a></li>
+    <li><a routerLink="/dashboard" routerLinkActive="active"><span>Dashboard</span></a></li>
+  <li><a routerLink="/productos" routerLinkActive="active"><span>Productos</span></a></li>
+  <li><a routerLink="/mesas" routerLinkActive="active"><span>Mesas</span></a></li>
+  <li><a routerLink="/configuracion" routerLinkActive="active"><span>Configuración</span></a></li>
+  <li><a routerLink="/facturacion" routerLinkActive="active"><span>Facturación</span></a></li>
+</ul>
 
     <!-- Sección de cerrar sesión -->
     <div class="logout-section">
