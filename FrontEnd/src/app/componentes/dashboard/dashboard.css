@@ -1,171 +1,171 @@
-/* Fuente base y reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body, html {
+    width: 100%;
+    height: 100%;
+    background-color: #f9f6f1; 
+  }
+
+  .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #4f423a;
+  padding: 10px 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   font-family: "Segoe UI", Arial, sans-serif;
+  background-color: white 
+  }
+
+  .contenido {
+    width: 100%;
+    height: calc(100vh - 70px);
+    background-color: #f9f6f1;
+  }
+.contenido h1 {
+    font-size: 1.3rem;
+    color: #4f423a;
+    font-family: "Segoe UI", Arial, sans-serif;
+
+  }
+
+.head h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-/* Contenedor principal */
+/* Contenedor derecho (buscador + iconos) */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Caja de búsqueda */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 6px 28px 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-box input:focus {
+  border-color: #4f423a;
+}
+
+.search-box i {
+  position: absolute;
+  right: 8px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Íconos */
+.notification-icon,
+.user-icon {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #444;
+  transition: color 0.2s ease;
+}
+
+.notification-icon:hover,
+.user-icon:hover {
+  color: #4f423a;
+}
 .contenido {
   padding: 20px;
   background-color: #f9f4ed;
   min-height: 100vh;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Header */
-.head {
+.dashboard {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+  margin-top: 20px;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.head h1 {
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  color:#6b5b4e;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1;
+  min-width: 260px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+    border-left: 5px solid #4a3535;
+
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
   font-size: 1.5rem;
-  font-weight: 600;
-  color: #4a3f35;
-}
-
-/* Botón agregar */
-.agregar-btn {
-  background-color: #4a90e2;
-  color: white;
-  transition: all 0.2s;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-.agregar-btn:hover {
-  background-color: #357ab8;
-  transform: scale(1.1);
-  cursor: pointer;
-}
-
-/* Tabla moderna */
-.table-container {
-  overflow-x: auto;
-}
-
-.modern-table {
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-.modern-table th {
-  background-color: #4a90e2;
-  color: white;
-  font-weight: 500;
-  padding: 12px;
-  text-align: left;
-}
-
-.modern-table td {
-  padding: 12px;
-  border-bottom: 1px solid #ffffff;
-  color: #4a3f35;
-}
-
-.modern-table tr:nth-child(even) td {
-  background-color: #0066ff;
-}
-
-/* Iconos de estado */
-.activo-icon.activo {
-  color: #00c853;
-  font-size: 1.4rem;
-}
-
-.activo-icon.inactivo {
-  color: #ff3d00;
-  font-size: 1.4rem;
-}
-
-/* Botones de acciones */
-td button.mat-icon-button {
-  margin-right: 8px;
-  background-color: #f1f1f1;
-  border-radius: 8px;
-  transition: all 0.2s;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-td button.mat-icon-button:hover {
-  transform: scale(1.2);
-  background-color: #e0d5c2;
-  cursor: pointer;
-}
-
-/* Botones con texto (modal footer) */
-.modal-footer button {
-  padding: 6px 15px;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-.modal-footer button:hover {
-  transform: scale(1.05);
-  cursor: pointer;
-}
-
-/* Modal */
-.modal-fondo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal {
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  width: 400px;
-  max-width: 95%;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.modal h2 {
-  font-size: 1.4rem;
-  margin-bottom: 15px;
   color: #4a3f35;
   text-align: center;
-  font-family: "Segoe UI", Arial, sans-serif;
+  margin-bottom: 10px;
+font-family: "Segoe UI", Arial, sans-serif;
+
 }
 
-/* Formularios */
-.full-width {
+.card h1 {
+  font-size: 1.8rem;
+  color: #2d2d2d;
+  text-align: center;
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+
+}
+
+.card p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  font-family: "Segoe UI", Arial, sans-serif;
+
+}
+
+.success {
+  color: #00a86b;
+}
+
+.info {
+  color: #007bff;
+}
+
+.warning {
+  color: #ffd000;
+}
+
+.activity {
   width: 100%;
-  margin-bottom: 15px;
 }
 
-/* Inputs y selects */
-.mat-form-field {
+.chart {
   width: 100%;
-}
-
-.mat-form-field-label,
-.mat-input-element,
-.mat-select-value-text {
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-/* Tooltips */
-.mat-tooltip {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 0.85rem;
+  height: auto;
+  margin-top: 10px;
 }
