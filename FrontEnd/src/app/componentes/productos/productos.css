@@ -1,12 +1,10 @@
-/* Fuente base y reset */
+/* Reset y base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Contenedor principal */
 .contenido {
   padding: 20px;
   background-color: #f9f4ed;
@@ -37,13 +35,11 @@
   background-color: #4a90e2;
   color: white;
   transition: all 0.2s;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .agregar-btn:hover {
   background-color: #357ab8;
   transform: scale(1.1);
-  cursor: pointer;
 }
 
 /* Tabla moderna */
@@ -55,11 +51,10 @@
   width: 100%;
   border-radius: 10px;
   overflow: hidden;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .modern-table th {
-  background-color: #4a90e2;
+  background-color: #4a3f35;
   color: white;
   font-weight: 500;
   padding: 12px;
@@ -68,12 +63,12 @@
 
 .modern-table td {
   padding: 12px;
-  border-bottom: 1px solid #ffffff;
+  border-bottom: 1px solid #e0e0e0;
   color: #4a3f35;
 }
 
 .modern-table tr:nth-child(even) td {
-  background-color: #0066ff;
+  background-color: #f1f3f6;
 }
 
 /* Iconos de estado */
@@ -93,27 +88,12 @@ td button.mat-icon-button {
   background-color: #f1f1f1;
   border-radius: 8px;
   transition: all 0.2s;
-  font-family: "Segoe UI", Arial, sans-serif;
+  color: #4a3535;
 }
 
 td button.mat-icon-button:hover {
   transform: scale(1.2);
   background-color: #e0d5c2;
-  cursor: pointer;
-}
-
-/* Botones con texto (modal footer) */
-.modal-footer button {
-  padding: 6px 15px;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.2s;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
-.modal-footer button:hover {
-  transform: scale(1.05);
-  cursor: pointer;
 }
 
 /* Modal */
@@ -144,13 +124,29 @@ td button.mat-icon-button:hover {
   margin-bottom: 15px;
   color: #4a3f35;
   text-align: center;
-  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Formularios */
 .full-width {
   width: 100%;
   margin-bottom: 15px;
+}
+
+/* Modal footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-footer button {
+  padding: 6px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.modal-footer button:hover {
+  transform: scale(1.05);
 }
 
 /* Inputs y selects */
@@ -158,14 +154,11 @@ td button.mat-icon-button:hover {
   width: 100%;
 }
 
-.mat-form-field-label,
-.mat-input-element,
-.mat-select-value-text {
-  font-family: "Segoe UI", Arial, sans-serif;
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #ccc;
 }
 
-/* Tooltips */
+/* Tooltips pequeños */
 .mat-tooltip {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
