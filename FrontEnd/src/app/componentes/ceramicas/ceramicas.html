@@ -1,0 +1,87 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="contenido">
+  <!-- Header -->
+  <div class="head">
+    <h1>Cerámicas</h1>
+    <div class="header-right">
+      <button mat-icon-button color="primary" (click)="abrirAgregar()" matTooltip="Agregar cerámica" class="agregar-btn">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tarjetas de cerámicas -->
+  <div class="cards-container">
+    <div class="card" *ngFor="let ceramica of ceramicas">
+      <img [src]="ceramica.imagen || 'https://via.placeholder.com/150'" alt="{{ ceramica.nombre }}">
+      <h3>{{ ceramica.nombre }}</h3>
+      <p class="precio">{{ ceramica.precio | currency:'USD':'symbol' }}</p>
+      <p class="descripcion">{{ ceramica.descripcion }}</p>
+
+      <div class="card-footer">
+        <mat-icon class="activo-icon" [ngClass]="{'activo': ceramica.activo, 'inactivo': !ceramica.activo}" matTooltip="Activo/Inactivo">
+          {{ ceramica.activo ? 'check_circle' : 'highlight_off' }}
+        </mat-icon>
+
+        <div class="acciones">
+          <button mat-icon-button color="primary" (click)="abrirEditar(ceramica)" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarCeramica(ceramica)" matTooltip="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="toggleActivo(ceramica)" matTooltip="Activar/Inactivar">
+            <mat-icon>{{ ceramica.activo ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-fondo" *ngIf="mostrarModal">
+    <div class="modal">
+      <h2>{{ modoEdicion ? 'Editar cerámica' : 'Agregar cerámica' }}</h2>
+      <form [formGroup]="ceramicaForm">
+        
+        <mat-form-field class="full-width">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre" placeholder="Nombre de la cerámica">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Precio</mat-label>
+          <input matInput type="number" formControlName="precio" placeholder="Precio">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Descripción</mat-label>
+          <input matInput formControlName="descripcion" placeholder="Descripción">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Activo</mat-label>
+          <select matNativeControl formControlName="activo">
+            <option [value]="true">Sí</option>
+            <option [value]="false">No</option>
+          </select>
+        </mat-form-field>
+
+        <!-- Imagen Drag & Drop -->
+        <div class="imagen-upload" 
+             (drop)="onImagenDrop($event)" 
+             (dragover)="onDragOver($event)">
+          <p *ngIf="!ceramicaForm.value.imagen">Arrastra tu imagen aquí o haz click para seleccionar</p>
+          <img *ngIf="ceramicaForm.value.imagen" [src]="ceramicaForm.value.imagen" alt="Vista previa">
+          <input type="file" accept="image/*" (change)="onImagenSelect($event)">
+        </div>
+
+        <div class="modal-footer">
+          <button mat-button color="primary" (click)="guardarCeramica()">Guardar</button>
+          <button mat-button (click)="cerrarModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
