@@ -1,40 +1,19 @@
-<!-- mesas3d.component.html -->
-<div #canvasContainer class="escena3d"></div>
+<div class="contenido">
+  <div class="head">
+    <h1>Mesas del Café</h1>
+  </div>
 
-<!-- Modal de Factura -->
-<div id="modalFactura" class="modal">
-  <div class="modal-content">
-    <span id="closeModal" class="close">&times;</span>
-    <h2>Factura Mesa</h2>
 
-    <table id="tablaProductos">
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Precio</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody id="productosBody">
-        <tr>
-          <td>Jugo de Naranja</td>
-          <td>2</td>
-          <td>$10.000</td>
-          <td><button class="btn-borrar">🗑️</button></td>
-        </tr>
-        <tr>
-          <td>Hamburguesa</td>
-          <td>1</td>
-          <td>$15.000</td>
-          <td><button class="btn-borrar">🗑️</button></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="mesas-container">
+  <div class="overlay"></div>
+  <div class="plano">
+    <!-- Ejemplo: Botones sobre el plano -->
+    <button class="mesa" style="top: 33%; left: 42.5%;" (click)="abrirModal(1)">Mesa 1</button>
+    <button class="mesa" style="top: 27.3%; left: 49.3%;" (click)="abrirModal(2)">Mesa 2</button>
+    <button class="mesa" style="top: 47.3%; left: 57%;" (click)="abrirModal(3)">Mesa 3</button>
+    <button class="mesa" style="top: 64.5%; left: 33.2%;" (click)="abrirModal(4)">Mesa 4</button>
+    <button class="mesa" style="top: 62%; left: 45.5%;" (click)="abrirModal(5)">Mesa 5</button>
+    <button class="mesa" style="top: 77.4%; left: 46.6%;" (click)="abrirModal(6)">Mesa 6</button>
 
-    <div class="acciones">
-      <button id="btnCancelar">Cancelar cuenta</button>
-      <button id="btnPagar">Pagar cuenta</button>
-    </div>
   </div>
 </div>

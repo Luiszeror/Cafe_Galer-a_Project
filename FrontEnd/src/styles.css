@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+.factura-dialog .mat-dialog-container {
+  width: 80vw !important;
+  background-color: lightblue !important;
+  height: 80vh !important;
+  max-width: 900px !important;
+  border-radius: 12px;
+  padding: 20px;
+}

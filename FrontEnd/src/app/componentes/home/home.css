@@ -50,6 +50,7 @@
 
 /* Modal (ventana flotante) */
 .modal-overlay {
+   font-family: 'Segoe UI', Arial, sans-serif;
   position: fixed;
   top: 0;
   left: 0;

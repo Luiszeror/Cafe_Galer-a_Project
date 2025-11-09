@@ -1,0 +1,48 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2>Mesa {{ data.mesa }}</h2>
+    <button class="close-btn" (click)="cerrar()">✕</button>
+  </div>
+
+  <div class="tabla-productos">
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Café Americano</td>
+          <td>2</td>
+          <td>$8.000</td>
+        </tr>
+        <tr>
+          <td>Capuccino</td>
+          <td>1</td>
+          <td>$6.500</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="acciones">
+    <button class="cancelar" (click)="cancelar()">Cancelar</button>
+    <button class="anadir" (click)="anadirProducto()">Añadir producto</button>
+    <button class="pagar" (click)="pagar()">Pagar</button>
+  </div>
+
+  <!-- SUBMODAL -->
+  <div class="submodal-backdrop" *ngIf="mostrarSeleccion">
+    <div class="submodal">
+      <h3>Seleccionar tipo de producto</h3>
+      <div class="opciones">
+        <button (click)="seleccionarProducto('Cerámicas')">Cerámicas</button>
+        <button (click)="seleccionarProducto('Cafetería')">Cafetería</button>
+      </div>
+      <button class="cerrar-sub" (click)="cerrarSeleccion()">Cerrar</button>
+    </div>
+  </div>
+</div>
