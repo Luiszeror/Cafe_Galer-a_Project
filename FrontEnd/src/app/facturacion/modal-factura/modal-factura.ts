@@ -1,9 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-modal-factura',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './modal-factura.html',
   styleUrls: ['./modal-factura.css']
 })

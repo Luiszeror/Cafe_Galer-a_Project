@@ -14,10 +14,10 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
   { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AuthGuard] },
-  { path: 'mesas', component: Mesas3DComponent, canActivate: [AuthGuard] },
+  { path: 'mesas', component: MesasComponent, canActivate: [AuthGuard] },
   { path: 'productos', component: ProductosComponent, canActivate: [AuthGuard] },
   { path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: 'home' } // redirige cualquier ruta desconocida
+  { path: '**', redirectTo: 'home' }, // redirige cualquier ruta desconocida
   { path: 'mesas', component: MesasComponent, canActivate: [AuthGuard]},
   { path: 'productos', component: ProductosComponent, canActivate: [AuthGuard]},
   {path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard]}
