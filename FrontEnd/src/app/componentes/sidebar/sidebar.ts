@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 })
 export class SidebarComponent {
   isCollapsed = true;
+  showSidebar = true; // ✅ Declarada correctamente
 
   constructor(private router: Router) {
     // Verificar inmediatamente la ruta actual al iniciar
@@ -31,17 +32,13 @@ export class SidebarComponent {
 
   logout() {
     console.log('Cerrando sesión...');
-    localStorage.removeItem('token');
 
-    // 🔹 Limpiar completamente la sesión
+    // 🔹 Limpiar la sesión
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
     localStorage.removeItem('userName');
 
     // 🔹 Redirigir al login
-    this.router.navigate(['/login']).then(() => {
-      // Evita que el usuario regrese con el botón "Atrás"
-      window.location.replace('/login');
-    });
+    this.router.navigate(['/login']);
   }
 }
