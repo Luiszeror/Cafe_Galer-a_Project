@@ -4,7 +4,7 @@ import { HomeComponent } from './componentes/home/home.component';
 import { Dashboard } from './componentes/dashboard/dashboard';
 import { AuthGuard } from './auth/auth.guard';
 import { ConfiguracionComponent } from './componentes/configuracion/configuracion';
-import { Mesas3DComponent } from './facturacion/mesas/mesas';
+import { MesasComponent } from './facturacion/mesas/mesas';
 import { ProductosComponent } from './componentes/productos/productos';
 import { CeramicasComponent } from './componentes/ceramicas/ceramicas';
 
@@ -18,4 +18,10 @@ export const routes: Routes = [
   { path: 'productos', component: ProductosComponent, canActivate: [AuthGuard] },
   { path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'home' } // redirige cualquier ruta desconocida
+  { path: 'mesas', component: MesasComponent, canActivate: [AuthGuard]},
+  { path: 'productos', component: ProductosComponent, canActivate: [AuthGuard]},
+  {path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard]}
+
+
+
 ];

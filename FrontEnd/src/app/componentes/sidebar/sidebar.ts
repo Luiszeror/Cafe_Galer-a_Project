@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -12,7 +12,6 @@ import { RouterModule } from '@angular/router';
 })
 export class SidebarComponent {
   isCollapsed = true;
-  showSidebar = true;
 
   constructor(private router: Router) {
     // Verificar inmediatamente la ruta actual al iniciar
@@ -32,6 +31,7 @@ export class SidebarComponent {
 
   logout() {
     console.log('Cerrando sesión...');
+    localStorage.removeItem('token');
 
     // 🔹 Limpiar completamente la sesión
     localStorage.removeItem('token');

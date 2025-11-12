@@ -2,18 +2,12 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { HomeComponent } from './componentes/home/home.component';
 import { Mesas3DComponent } from './facturacion/mesas/mesas';
-import { AuthGuard } from './auth/auth.guard'; // 👈 IMPORTANTE: agrega el guard
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   // 🚫 Login sin protección
   { path: 'login', component: LoginComponent },
-
-  // ✅ Rutas protegidas por AuthGuard
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'mesas', component: Mesas3DComponent, canActivate: [AuthGuard] },
-
-  // 🔁 Cualquier ruta no reconocida redirige al login
-  { path: '**', redirectTo: 'login' }
+  { path: 'home', component: HomeComponent },
+  { path: 'mesas', component: Mesas3DComponent }
 ];

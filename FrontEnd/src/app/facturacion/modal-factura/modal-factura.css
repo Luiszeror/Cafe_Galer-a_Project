@@ -1,0 +1,136 @@
+.modal-container {
+  width: 600px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #4b3b2f;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #a33;
+  font-weight: bold;
+}
+
+.tabla-productos {
+  margin-top: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  background-color: #f0e5dc;
+  color: #4b3b2f;
+  padding: 10px;
+  text-align: left;
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.acciones button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-weight: 500;
+}
+
+.cancelar {
+  background-color: #b83b3b;
+}
+
+.anadir {
+  background-color: #c06727;
+}
+
+.pagar {
+  background-color: #2e8b57;
+}
+
+.acciones button:hover {
+  opacity: 0.85;
+}
+
+.submodal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.submodal {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  min-width: 300px;
+}
+
+.submodal h3 {
+  margin-bottom: 20px;
+  color: #4b3b2f;
+  font-weight: 600;
+}
+
+.opciones {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.opciones button {
+  background-color: #c06727;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.opciones button:hover {
+  background-color: #b3581e;
+}
+
+.cerrar-sub {
+  background: none;
+  border: none;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+}
