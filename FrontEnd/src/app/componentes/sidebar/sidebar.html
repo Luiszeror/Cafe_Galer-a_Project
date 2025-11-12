@@ -19,6 +19,11 @@
     </div>
     <!-- Menú -->
     <ul class="menu">
+      <div class="logout-section">
+      <button class="logout-btn" (click)="logout()">
+        <i class="fa fa-sign-out-alt"></i> Cerrar sesión
+      </button>
+    </div>
   <li><a routerLink="/home" routerLinkActive="active"><span>Inicio</span></a></li>
     <li><a routerLink="/dashboard" routerLinkActive="active"><span>Dashboard</span></a></li>
   <li><a routerLink="/productos" routerLinkActive="active"><span>Productos</span></a></li>
@@ -29,10 +34,6 @@
 </ul>
 
     <!-- Sección de cerrar sesión -->
-    <div class="logout-section">
-      <button class="logout-btn" (click)="logout()">
-        <i class="fa fa-sign-out-alt"></i> Cerrar sesión
-      </button>
-    </div>
+    
   </div>
 </div>

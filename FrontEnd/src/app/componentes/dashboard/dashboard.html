@@ -8,64 +8,86 @@
 </head>
 <body>
   <div class="head">
- <h1>Dashboard</h1>
-
-  <div class="header-right">
-    <div class="search-box">
-      <input type="text" placeholder="Buscar..." />
-      <i class="bi bi-search"></i>
+    <h1>Dashboard</h1>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" placeholder="Buscar..." />
+        <i class="bi bi-search"></i>
+      </div>
+      <i class="bi bi-bell notification-icon"></i>
+      <i class="bi bi-person-circle user-icon"></i>
     </div>
-
-    <i class="bi bi-bell notification-icon"></i>
-
-    <i class="bi bi-person-circle user-icon"></i>
   </div>
-  </div>
+
   <div class="contenido">
+    <main class="dashboard">
+      <!-- Fila 1 -->
+      <div class="cards">
+        <div class="card">
+          <h3>Ventas Diarias (Café)</h3>
+          <h1 id="ventasDiarias">$0.00</h1>
+          <p id="ventasDiariasCambio" class="success">↑ 0% respecto ayer</p>
+        </div>
 
-  <main class="dashboard">
-    <!-- Fila 1 -->
-    <div class="cards">
-      <div class="card">
-        <h3>Ventas Diarias (Café)</h3>
-        <h1>$350.50</h1>
-        <p class="success">↑ +12% respecto ayer</p>
+        <div class="card">
+          <h3>Obras en Exhibición</h3>
+          <h1 id="obrasExhibicion">0</h1>
+          <p id="obrasNuevas" class="info">+0 nuevas esta semana</p>
+        </div>
       </div>
 
-      <div class="card">
-        <h3>Obras en Exhibición</h3>
-        <h1>25</h1>
-        <p class="info">+2 nuevas esta semana</p>
+      <!-- Fila 2 -->
+      <div class="cards mid">
+        <div class="card">
+          <h3>Pedidos Pendientes</h3>
+          <h1 id="pedidosPendientes">0</h1>
+          <p>Para hoy</p>
+        </div>
+
+        <div class="card">
+          <h3>Ventas Semanales</h3>
+          <img
+            src="assets/chart-placeholder.png"
+            alt="Gráfico de ventas"
+            class="chart"
+            id="ventasSemanalesChart"
+          />
+        </div>
       </div>
 
-      
-    </div>
-
-    <!-- Fila 2 -->
-    <div class="cards mid">
-      <div class="card">
-        <h3>Pedidos Pendientes</h3>
-        <h1>5</h1>
-        <p>Para hoy</p>
+      <!-- Fila 3 -->
+      <div class="card activity">
+        <h3>Actividad Reciente</h3>
+        <p id="actividadReciente">Cargando...</p>
       </div>
+    </main>
+  </div>
 
-      <div class="card">
-        <h3>Ventas Semanales</h3>
-        <img
-          src="assets/chart-placeholder.png"
-          alt="Gráfico de ventas"
-          class="chart"
-        />
-      </div>
-    </div>
+  <script>
+    async function cargarDatos() {
+      try {
+        const res = await fetch('https://tu-backend.com/api/dashboard'); // Cambia esta URL
+        const data = await res.json();
 
-    <!-- Fila 3 -->
-    <div class="card activity">
-      <h3>Actividad Reciente</h3>
-      <p>Hace 5 min - Venta de pintura "Paisaje Tropical"</p>
-    </div>
-  </main>
-</div>
+        // Actualizamos el DOM
+        document.getElementById('ventasDiarias').textContent = `$${data.ventasDiarias.toFixed(2)}`;
+        document.getElementById('ventasDiariasCambio').textContent = `↑ +${data.ventasDiariasCambio}% respecto ayer`;
 
+        document.getElementById('obrasExhibicion').textContent = data.obrasExhibicion;
+        document.getElementById('obrasNuevas').textContent = `+${data.obrasNuevas} nuevas esta semana`;
+
+        document.getElementById('pedidosPendientes').textContent = data.pedidosPendientes;
+
+        document.getElementById('actividadReciente').textContent = data.actividadReciente;
+
+        // Aquí podrías generar un gráfico real con Chart.js en lugar del placeholder
+        // Ejemplo: usar data.ventasSemanales para un gráfico
+      } catch (err) {
+        console.error('Error al cargar los datos:', err);
+      }
+    }
+
+    cargarDatos();
+  </script>
 </body>
 </html>

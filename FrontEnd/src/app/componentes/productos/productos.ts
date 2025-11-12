@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { catchError, of } from 'rxjs';
 
 // Angular Material
 import { MatTableModule } from '@angular/material/table';
@@ -37,11 +39,7 @@ interface Producto {
   styleUrls: ['./productos.css']
 })
 export class ProductosComponent {
-  productos: Producto[] = [
-    { id: 1, nombre: 'Café', precio: 3, activo: true },
-    { id: 2, nombre: 'Pan', precio: 2, activo: false }
-  ];
-
+  productos: Producto[] = [];
   displayedColumns = ['nombre', 'precio', 'descripcion', 'activo', 'acciones'];
 
   // Modal
@@ -52,13 +50,37 @@ export class ProductosComponent {
   // Formulario
   productoForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  // Lista local como fallback
+  private listaLocal: Producto[] = [
+    { id: 1, nombre: 'Café', precio: 3, activo: true },
+    { id: 2, nombre: 'Pan', precio: 2, activo: false }
+  ];
+
+  private URL_BACKEND = 'https://tu-backend.com/api/productos'; // Cambia aquí
+
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.productoForm = this.fb.group({
       nombre: ['', Validators.required],
       precio: [0, [Validators.required, Validators.min(0)]],
       descripcion: [''],
       activo: [true]
     });
+
+    // Intentamos cargar los productos del backend
+    this.cargarProductos();
+  }
+
+  cargarProductos() {
+    this.http.get<Producto[]>(this.URL_BACKEND)
+      .pipe(
+        catchError(err => {
+          console.warn('No se pudo conectar con el backend, usando lista local', err);
+          return of(this.listaLocal); // fallback a la lista local
+        })
+      )
+      .subscribe(data => {
+        this.productos = data;
+      });
   }
 
   abrirAgregar() {

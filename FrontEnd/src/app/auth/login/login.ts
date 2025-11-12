@@ -16,54 +16,42 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  // 👉 URL de tu backend
-  private apiUrl = 'http://localhost:5000/api/login';
-
-  // 🔹 Usuarios locales de prueba
-  private mockUsers = [
-    { email: 'admin@cafe.com', password: 'admin123', rol: 'Administrador' },
-    { email: 'user@cafe.com', password: 'user123', rol: 'Usuario' }
-  ];
+  // URL de tu backend
+  private apiUrl = 'http://localhost:4000/api/auth/login';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   onLogin() {
-    console.log('Intentando iniciar sesión con:', this.email, this.password);
+    this.errorMessage = '';
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Por favor ingresa correo y contraseña';
+      return;
+    }
 
-    const credentials = {
-      email: this.email,
-      password: this.password
-    };
+    const credentials = { email: this.email, password: this.password };
 
-    // 🔹 Primero intenta con el backend real
     this.http.post<any>(this.apiUrl, credentials).subscribe({
       next: (response) => {
-        if (response && response.token) {
+        if (response && response.token && response.user) {
+          // Guardar token y rol
           localStorage.setItem('token', response.token);
-          alert('Inicio de sesión exitoso con el servidor ✅');
-          this.errorMessage = '';
+          localStorage.setItem('rol', response.user.role);
+          localStorage.setItem('userName', response.user.name);
+
+          alert(`Bienvenido ${response.user.name} ✅`);
           this.router.navigate(['/home']);
         } else {
           this.errorMessage = 'Respuesta inválida del servidor.';
         }
       },
       error: (err) => {
-        console.warn('⚠️ Servidor no disponible, usando modo local.');
-        console.error(err);
+        console.error('Error en login backend:', err);
 
-        // 🔹 Fallback local: intenta validar con usuarios de prueba
-        const user = this.mockUsers.find(
-          (u) => u.email === this.email && u.password === this.password
-        );
-
-        if (user) {
-          localStorage.setItem('token', 'token-falso-local');
-          localStorage.setItem('rol', user.rol);
-          alert(`Inicio de sesión en modo local ✅ Bienvenido ${user.rol}`);
-          this.errorMessage = '';
-          this.router.navigate(['/home']);
+        // Si el backend envía un mensaje de error
+        if (err.error && err.error.msg) {
+          this.errorMessage = err.error.msg;
         } else {
-          this.errorMessage = 'Credenciales incorrectas ❌';
+          this.errorMessage = 'Error desconocido al iniciar sesión.';
         }
       }
     });

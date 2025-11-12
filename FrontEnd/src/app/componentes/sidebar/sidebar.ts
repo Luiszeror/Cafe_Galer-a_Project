@@ -15,24 +15,33 @@ export class SidebarComponent {
   showSidebar = true;
 
   constructor(private router: Router) {
-  // Verificar inmediatamente la ruta actual al iniciar
-  this.showSidebar = !this.router.url.includes('/login');
+    // Verificar inmediatamente la ruta actual al iniciar
+    this.showSidebar = !this.router.url.includes('/login');
 
-  // Suscribirse a los eventos de navegación
-  this.router.events.subscribe(event => {
-    if (event instanceof NavigationEnd) {
-      this.showSidebar = !event.url.includes('/login');
-    }
-  });
-}
+    // Suscribirse a los eventos de navegación
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.showSidebar = !event.url.includes('/login');
+      }
+    });
+  }
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
 
   logout() {
-    // Aquí puedes limpiar la sesión o token cuando conectes la base de datos
     console.log('Cerrando sesión...');
-    this.router.navigate(['/login']);
+
+    // 🔹 Limpiar completamente la sesión
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    localStorage.removeItem('userName');
+
+    // 🔹 Redirigir al login
+    this.router.navigate(['/login']).then(() => {
+      // Evita que el usuario regrese con el botón "Atrás"
+      window.location.replace('/login');
+    });
   }
 }

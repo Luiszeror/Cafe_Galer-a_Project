@@ -283,3 +283,17 @@ input.blurred {
   min-height: 100vh;
   background-color: #F8F7F1;
 }
+
+.sidebar-header {
+  padding: 1rem;
+  height: 200px;
+  margin-top: -50px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('../../../assets/logo-agua.png');
+  background-repeat: no-repeat;
+  background-position: center 10px;
+  background-size: 220px 200px;
+}
