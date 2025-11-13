@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -38,16 +38,16 @@ interface Producto {
   templateUrl: './productos.html',
   styleUrls: ['./productos.css']
 })
-export class ProductosComponent {
+export class ProductosComponent implements OnInit {
+
   productos: Producto[] = [];
   displayedColumns = ['name', 'price', 'description', 'active', 'acciones'];
-
   mostrarModal = false;
   modoEdicion = false;
   productoSeleccionado: Producto | null = null;
   productoForm: FormGroup;
 
-  private URL_BACKEND = 'http://localhost:4000/api/products'; // 👈 tu backend local o remoto
+  private URL_BACKEND = 'http://localhost:4000/api/products';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.productoForm = this.fb.group({
@@ -56,10 +56,13 @@ export class ProductosComponent {
       description: [''],
       active: [true]
     });
+  }
 
+  ngOnInit() {
     this.cargarProductos();
   }
 
+  // 🔁 Cargar todos los productos del backend
   cargarProductos() {
     this.http.get<Producto[]>(this.URL_BACKEND)
       .pipe(
@@ -73,6 +76,7 @@ export class ProductosComponent {
       });
   }
 
+  // 🧱 Abrir modal para crear
   abrirAgregar() {
     this.modoEdicion = false;
     this.productoSeleccionado = null;
@@ -80,6 +84,7 @@ export class ProductosComponent {
     this.mostrarModal = true;
   }
 
+  // ✏️ Abrir modal para editar
   abrirEditar(producto: Producto) {
     this.modoEdicion = true;
     this.productoSeleccionado = producto;
@@ -92,28 +97,28 @@ export class ProductosComponent {
     this.mostrarModal = true;
   }
 
+  // 💾 Guardar cambios
   guardarProducto() {
     if (this.productoForm.invalid) return;
 
     const datos = this.productoForm.value;
 
     if (this.modoEdicion && this.productoSeleccionado) {
-      // 🔹 PUT al backend
+      // 🔹 PUT
       this.http.put<Producto>(`${this.URL_BACKEND}/${this.productoSeleccionado._id}`, datos)
         .subscribe({
-          next: actualizado => {
-            const index = this.productos.findIndex(p => p._id === actualizado._id);
-            this.productos[index] = actualizado;
+          next: () => {
+            this.cargarProductos(); // 🔁 Recarga lista completa
             this.cerrarModal();
           },
           error: err => console.error('Error actualizando producto:', err)
         });
     } else {
-      // 🔹 POST al backend
+      // 🔹 POST
       this.http.post<Producto>(this.URL_BACKEND, datos)
         .subscribe({
-          next: nuevo => {
-            this.productos.push(nuevo);
+          next: () => {
+            this.cargarProductos(); // 🔁 Recarga lista completa
             this.cerrarModal();
           },
           error: err => console.error('Error creando producto:', err)
@@ -121,21 +126,27 @@ export class ProductosComponent {
     }
   }
 
+  // ❌ Eliminar
   eliminarProducto(producto: Producto) {
     if (!producto._id) return;
     this.http.delete(`${this.URL_BACKEND}/${producto._id}`)
       .subscribe({
-        next: () => this.productos = this.productos.filter(p => p._id !== producto._id),
+        next: () => {
+          this.cargarProductos(); // 🔁 Recarga automática
+        },
         error: err => console.error('Error eliminando producto:', err)
       });
   }
 
+  // 🟢 Toggle activo/inactivo
   toggleActivo(producto: Producto) {
     if (!producto._id) return;
     const nuevoEstado = !producto.active;
     this.http.put<Producto>(`${this.URL_BACKEND}/${producto._id}`, { active: nuevoEstado })
       .subscribe({
-        next: actualizado => producto.active = actualizado.active,
+        next: () => {
+          this.cargarProductos(); // 🔁 Refresca tabla automáticamente
+        },
         error: err => console.error('Error cambiando estado:', err)
       });
   }
