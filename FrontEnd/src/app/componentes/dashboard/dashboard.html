@@ -1,93 +1,59 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-</head>
-<body>
-  <div class="head">
-    <h1>Dashboard</h1>
-    <div class="header-right">
-      <div class="search-box">
-        <input type="text" placeholder="Buscar..." />
-        <i class="bi bi-search"></i>
-      </div>
-      <i class="bi bi-bell notification-icon"></i>
-      <i class="bi bi-person-circle user-icon"></i>
+<div class="head">
+  <h1>Dashboard de Ventas</h1>
+  <div class="header-right">
+    <div class="search-box">
+      <input type="text" placeholder="Buscar..." />
+      <i class="bi bi-search"></i>
     </div>
+    <i class="bi bi-bell notification-icon"></i>
+    <i class="bi bi-person-circle user-icon"></i>
   </div>
+</div>
 
-  <div class="contenido">
-    <main class="dashboard">
-      <!-- Fila 1 -->
-      <div class="cards">
-        <div class="card">
-          <h3>Ventas Diarias (Café)</h3>
-          <h1 id="ventasDiarias">$0.00</h1>
-          <p id="ventasDiariasCambio" class="success">↑ 0% respecto ayer</p>
-        </div>
-
-        <div class="card">
-          <h3>Obras en Exhibición</h3>
-          <h1 id="obrasExhibicion">0</h1>
-          <p id="obrasNuevas" class="info">+0 nuevas esta semana</p>
-        </div>
+<div class="contenido">
+  <main class="dashboard">
+    <!-- Fila 1 -->
+    <div class="cards">
+      <div class="card">
+        <h3>Ventas Totales</h3>
+        <h1>{{ totalVentas }}</h1>
+        <p class="info">Número total de ventas registradas</p>
       </div>
 
-      <!-- Fila 2 -->
-      <div class="cards mid">
-        <div class="card">
-          <h3>Pedidos Pendientes</h3>
-          <h1 id="pedidosPendientes">0</h1>
-          <p>Para hoy</p>
-        </div>
+      <div class="card">
+        <h3>Total Dinero Vendido</h3>
+        <h1>${{ dineroTotal.toFixed(2) }}</h1>
+        <p class="success">Monto total acumulado</p>
+      </div>
+    </div>
 
-        <div class="card">
-          <h3>Ventas Semanales</h3>
-          <img
-            src="assets/chart-placeholder.png"
-            alt="Gráfico de ventas"
-            class="chart"
-            id="ventasSemanalesChart"
-          />
-        </div>
+    <!-- Fila 2 -->
+    <div class="cards mid">
+      <div class="card">
+        <h3>Productos Vendidos</h3>
+        <h1>{{ totalProductos }}</h1>
+        <p>Unidades totales</p>
       </div>
 
-      <!-- Fila 3 -->
-      <div class="card activity">
-        <h3>Actividad Reciente</h3>
-        <p id="actividadReciente">Cargando...</p>
+      <div class="card">
+        <h3>Cerámicas Vendidas</h3>
+        <h1>{{ totalCeramicas }}</h1>
+        <p>Incluye todas las obras</p>
       </div>
-    </main>
-  </div>
+    </div>
 
-  <script>
-    async function cargarDatos() {
-      try {
-        const res = await fetch('https://tu-backend.com/api/dashboard'); // Cambia esta URL
-        const data = await res.json();
+    <!-- Fila 3 -->
+    <div class="cards mid">
 
-        // Actualizamos el DOM
-        document.getElementById('ventasDiarias').textContent = `$${data.ventasDiarias.toFixed(2)}`;
-        document.getElementById('ventasDiariasCambio').textContent = `↑ +${data.ventasDiariasCambio}% respecto ayer`;
+    <div class="card activity">
+      <h3>Cliente Más Frecuente</h3>
+      <p>{{ clienteMasFrecuente }}</p>
+    </div>
 
-        document.getElementById('obrasExhibicion').textContent = data.obrasExhibicion;
-        document.getElementById('obrasNuevas').textContent = `+${data.obrasNuevas} nuevas esta semana`;
-
-        document.getElementById('pedidosPendientes').textContent = data.pedidosPendientes;
-
-        document.getElementById('actividadReciente').textContent = data.actividadReciente;
-
-        // Aquí podrías generar un gráfico real con Chart.js en lugar del placeholder
-        // Ejemplo: usar data.ventasSemanales para un gráfico
-      } catch (err) {
-        console.error('Error al cargar los datos:', err);
-      }
-    }
-
-    cargarDatos();
-  </script>
-</body>
-</html>
+    <div class="card activity">
+      <h3>Actividad Reciente</h3>
+      <p>{{ actividadReciente }}</p>
+    </div>
+    </div>
+  </main>
+</div>
