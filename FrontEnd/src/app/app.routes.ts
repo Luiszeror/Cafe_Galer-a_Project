@@ -7,6 +7,7 @@ import { ConfiguracionComponent } from './componentes/configuracion/configuracio
 import { MesasComponent } from './facturacion/mesas/mesas';
 import { ProductosComponent } from './componentes/productos/productos';
 import { CeramicasComponent } from './componentes/ceramicas/ceramicas';
+import { Facturacion } from './componentes/facturacion/facturacion'; 
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,7 +21,8 @@ export const routes: Routes = [
   { path: '**', redirectTo: 'home' }, // redirige cualquier ruta desconocida
   { path: 'mesas', component: MesasComponent, canActivate: [AuthGuard]},
   { path: 'productos', component: ProductosComponent, canActivate: [AuthGuard]},
-  {path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard]}
+  {path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard]},
+  {path: 'facturacion', component: Facturacion, canActivate: [AuthGuard]}
 
 
 

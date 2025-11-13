@@ -1,0 +1,89 @@
+<div class="config-container">
+  <h2>Ventas y Reportes</h2>
+
+  <!-- Filtros -->
+  <div class="section">
+    <h3>Filtros de Reportes</h3>
+    <div class="filtros-container">
+      <div class="form-group">
+        <label for="tipoVenta">Tipo de Venta</label>
+        <select id="tipoVenta">
+          <option value="todas">Todas</option>
+          <option value="cafeteria">Cafetería</option>
+          <option value="arte">Arte</option>
+          <option value="otros">Otros</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaInicio">Fecha Inicio</label>
+        <input type="date" id="fechaInicio" />
+      </div>
+
+      <div class="form-group">
+        <label for="fechaFin">Fecha Fin</label>
+        <input type="date" id="fechaFin" />
+      </div>
+
+      <div class="btns-filtros">
+        <button class="btn-guardar">Aplicar Filtros</button>
+        <button class="btn-add">Exportar CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historial -->
+  <div class="section">
+    <h3>Historial de Ventas</h3>
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>ID Venta</th>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Descripción</th>
+          <th>Monto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#00123</td>
+          <td>2023-10-26</td>
+          <td>Cafetería</td>
+          <td>Latte + Croissant</td>
+          <td>$8.50</td>
+          <td>
+            <button class="btn-eliminar">
+              <i class="fa fa-lock"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>#00122</td>
+          <td>2023-10-26</td>
+          <td>Arte</td>
+          <td>Pintura "Paisaje Urbano"</td>
+          <td>$500.00</td>
+          <td>
+            <button class="btn-eliminar">
+              <i class="fa fa-lock"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>#00121</td>
+          <td>2023-10-25</td>
+          <td>Cafetería</td>
+          <td>Cappuccino ×2</td>
+          <td>$9.00</td>
+          <td>
+            <button class="btn-eliminar">
+              <i class="fa fa-lock"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

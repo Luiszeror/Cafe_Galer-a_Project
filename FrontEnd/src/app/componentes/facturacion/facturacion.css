@@ -1,0 +1,59 @@
+/* Reutiliza tus estilos base */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+.filtros-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.filtros-container .form-group {
+  flex: 1;
+  min-width: 180px;
+}
+
+.btns-filtros {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Ajuste visual de la tabla */
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla-usuarios th {
+  background-color: #f4ede4;
+  color: #4a3f35;
+  font-weight: 600;
+}
+
+.tabla-usuarios tr:hover {
+  background-color: #f9f4ed;
+}
+
+/* Ícono de acciones */
+.btn-eliminar {
+  background: none;
+  border: none;
+  color: #4f423a;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.btn-eliminar:hover {
+  color: #a38768;
+}
+

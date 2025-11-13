@@ -13,11 +13,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface Producto {
-  id: number;
-  nombre: string;
-  precio: number;
-  descripcion?: string;
-  activo: boolean;
+  _id?: string;
+  name: string;
+  price: number;
+  description?: string;
+  active: boolean;
 }
 
 @Component({
@@ -40,33 +40,23 @@ interface Producto {
 })
 export class ProductosComponent {
   productos: Producto[] = [];
-  displayedColumns = ['nombre', 'precio', 'descripcion', 'activo', 'acciones'];
+  displayedColumns = ['name', 'price', 'description', 'active', 'acciones'];
 
-  // Modal
   mostrarModal = false;
   modoEdicion = false;
   productoSeleccionado: Producto | null = null;
-
-  // Formulario
   productoForm: FormGroup;
 
-  // Lista local como fallback
-  private listaLocal: Producto[] = [
-    { id: 1, nombre: 'Café', precio: 3, activo: true },
-    { id: 2, nombre: 'Pan', precio: 2, activo: false }
-  ];
-
-  private URL_BACKEND = 'https://tu-backend.com/api/productos'; // Cambia aquí
+  private URL_BACKEND = 'http://localhost:4000/api/products'; // 👈 tu backend local o remoto
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.productoForm = this.fb.group({
-      nombre: ['', Validators.required],
-      precio: [0, [Validators.required, Validators.min(0)]],
-      descripcion: [''],
-      activo: [true]
+      name: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      description: [''],
+      active: [true]
     });
 
-    // Intentamos cargar los productos del backend
     this.cargarProductos();
   }
 
@@ -74,8 +64,8 @@ export class ProductosComponent {
     this.http.get<Producto[]>(this.URL_BACKEND)
       .pipe(
         catchError(err => {
-          console.warn('No se pudo conectar con el backend, usando lista local', err);
-          return of(this.listaLocal); // fallback a la lista local
+          console.warn('⚠️ No se pudo conectar con el backend:', err);
+          return of([]);
         })
       )
       .subscribe(data => {
@@ -86,7 +76,7 @@ export class ProductosComponent {
   abrirAgregar() {
     this.modoEdicion = false;
     this.productoSeleccionado = null;
-    this.productoForm.reset({ nombre: '', precio: 0, descripcion: '', activo: true });
+    this.productoForm.reset({ name: '', price: 0, description: '', active: true });
     this.mostrarModal = true;
   }
 
@@ -94,10 +84,10 @@ export class ProductosComponent {
     this.modoEdicion = true;
     this.productoSeleccionado = producto;
     this.productoForm.setValue({
-      nombre: producto.nombre,
-      precio: producto.precio,
-      descripcion: producto.descripcion || '',
-      activo: producto.activo || false
+      name: producto.name,
+      price: producto.price,
+      description: producto.description || '',
+      active: producto.active
     });
     this.mostrarModal = true;
   }
@@ -108,22 +98,46 @@ export class ProductosComponent {
     const datos = this.productoForm.value;
 
     if (this.modoEdicion && this.productoSeleccionado) {
-      const index = this.productos.findIndex(p => p.id === this.productoSeleccionado!.id);
-      this.productos[index] = { ...this.productoSeleccionado, ...datos };
+      // 🔹 PUT al backend
+      this.http.put<Producto>(`${this.URL_BACKEND}/${this.productoSeleccionado._id}`, datos)
+        .subscribe({
+          next: actualizado => {
+            const index = this.productos.findIndex(p => p._id === actualizado._id);
+            this.productos[index] = actualizado;
+            this.cerrarModal();
+          },
+          error: err => console.error('Error actualizando producto:', err)
+        });
     } else {
-      const nuevoProducto: Producto = { id: Date.now(), ...datos };
-      this.productos.push(nuevoProducto);
+      // 🔹 POST al backend
+      this.http.post<Producto>(this.URL_BACKEND, datos)
+        .subscribe({
+          next: nuevo => {
+            this.productos.push(nuevo);
+            this.cerrarModal();
+          },
+          error: err => console.error('Error creando producto:', err)
+        });
     }
-
-    this.cerrarModal();
   }
 
   eliminarProducto(producto: Producto) {
-    this.productos = this.productos.filter(p => p.id !== producto.id);
+    if (!producto._id) return;
+    this.http.delete(`${this.URL_BACKEND}/${producto._id}`)
+      .subscribe({
+        next: () => this.productos = this.productos.filter(p => p._id !== producto._id),
+        error: err => console.error('Error eliminando producto:', err)
+      });
   }
 
   toggleActivo(producto: Producto) {
-    producto.activo = !producto.activo;
+    if (!producto._id) return;
+    const nuevoEstado = !producto.active;
+    this.http.put<Producto>(`${this.URL_BACKEND}/${producto._id}`, { active: nuevoEstado })
+      .subscribe({
+        next: actualizado => producto.active = actualizado.active,
+        error: err => console.error('Error cambiando estado:', err)
+      });
   }
 
   cerrarModal() {

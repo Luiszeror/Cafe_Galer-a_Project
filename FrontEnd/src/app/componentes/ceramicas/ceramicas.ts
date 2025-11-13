@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { catchError, of } from 'rxjs';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -10,12 +12,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface Ceramica {
-  id: number;
-  nombre: string;
-  precio: number;
-  descripcion?: string;
-  activo: boolean;
-  imagen?: string; // Para mostrar imagen en la tarjeta
+  _id?: string;
+  name: string;
+  price: number;
+  description?: string;
+  active: boolean;
+  imgUrl?: string; // Base64
 }
 
 @Component({
@@ -23,6 +25,7 @@ interface Ceramica {
   standalone: true,
   imports: [
     CommonModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     CurrencyPipe,
@@ -35,103 +38,137 @@ interface Ceramica {
   templateUrl: './ceramicas.html',
   styleUrls: ['./ceramicas.css']
 })
-export class CeramicasComponent {
-  ceramicas: Ceramica[] = [
-    { id: 1, nombre: 'Vasija', precio: 15, descripcion: 'Hecha a mano', activo: true, imagen: 'https://via.placeholder.com/150' },
-    { id: 2, nombre: 'Jarrón', precio: 25, descripcion: 'Decorativo', activo: false, imagen: 'https://via.placeholder.com/150' }
-  ];
-
-  // Modal
+export class CeramicasComponent implements OnInit {
+  ceramicas: Ceramica[] = [];
   mostrarModal = false;
   modoEdicion = false;
   ceramicaSeleccionada: Ceramica | null = null;
 
-  // Formulario
   ceramicaForm: FormGroup;
+  private URL_BACKEND = 'http://localhost:4000/api/ceramics';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.ceramicaForm = this.fb.group({
-      nombre: ['', Validators.required],
-      precio: [0, [Validators.required, Validators.min(0)]],
-      descripcion: [''],
-      activo: [true],
-      imagen: [''] // Nueva propiedad para imagen
+      name: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      description: [''],
+      active: [true],
+      imgUrl: ['']
     });
+  }
+
+  ngOnInit() {
+    this.cargarCeramicas();
+  }
+
+  // --- CRUD ---
+  cargarCeramicas() {
+    this.http.get<Ceramica[]>(this.URL_BACKEND)
+      .pipe(catchError(err => {
+        console.warn('No se pudo cargar desde backend, fallback vacío', err);
+        return of([]);
+      }))
+      .subscribe(data => this.ceramicas = data);
   }
 
   abrirAgregar() {
     this.modoEdicion = false;
     this.ceramicaSeleccionada = null;
-    this.ceramicaForm.reset({ nombre: '', precio: 0, descripcion: '', activo: true, imagen: '' });
+    this.ceramicaForm.reset({ name: '', price: 0, description: '', active: true, imgUrl: '' });
     this.mostrarModal = true;
   }
 
   abrirEditar(ceramica: Ceramica) {
     this.modoEdicion = true;
     this.ceramicaSeleccionada = ceramica;
-    this.ceramicaForm.setValue({
-      nombre: ceramica.nombre,
-      precio: ceramica.precio,
-      descripcion: ceramica.descripcion || '',
-      activo: ceramica.activo || false,
-      imagen: ceramica.imagen || ''
-    });
+    this.ceramicaForm.patchValue(ceramica);
     this.mostrarModal = true;
   }
 
   guardarCeramica() {
     if (this.ceramicaForm.invalid) return;
-    const datos = this.ceramicaForm.value;
+    const datos: Ceramica = this.ceramicaForm.value;
 
-    if (this.modoEdicion && this.ceramicaSeleccionada) {
-      const index = this.ceramicas.findIndex(c => c.id === this.ceramicaSeleccionada!.id);
-      this.ceramicas[index] = { ...this.ceramicaSeleccionada, ...datos };
+    if (this.modoEdicion && this.ceramicaSeleccionada?._id) {
+      this.http.put<Ceramica>(`${this.URL_BACKEND}/${this.ceramicaSeleccionada._id}`, datos).subscribe({
+        next: () => this.cargarCeramicas(),
+        error: err => console.error('Error actualizando:', err)
+      });
     } else {
-      const nuevaCeramica: Ceramica = { id: Date.now(), ...datos };
-      this.ceramicas.push(nuevaCeramica);
+      this.http.post<Ceramica>(this.URL_BACKEND, datos).subscribe({
+        next: () => this.cargarCeramicas(),
+        error: err => console.error('Error creando:', err)
+      });
     }
 
     this.cerrarModal();
   }
 
   eliminarCeramica(ceramica: Ceramica) {
-    this.ceramicas = this.ceramicas.filter(c => c.id !== ceramica.id);
+    if (!ceramica._id) return;
+    this.http.delete(`${this.URL_BACKEND}/${ceramica._id}`).subscribe({
+      next: () => this.cargarCeramicas(),
+      error: err => console.error('Error eliminando:', err)
+    });
   }
 
   toggleActivo(ceramica: Ceramica) {
-    ceramica.activo = !ceramica.activo;
+    ceramica.active = !ceramica.active;
+    if (ceramica._id) {
+      this.http.put(`${this.URL_BACKEND}/${ceramica._id}`, ceramica).subscribe();
+    }
   }
 
   cerrarModal() {
     this.mostrarModal = false;
   }
 
-  // --- Funciones para imagen drag & drop ---
+  // --- Manejo de imagen Base64 ---
   onDragOver(event: DragEvent) {
-    event.preventDefault(); // Permite drop
+    event.preventDefault();
   }
 
   onImagenDrop(event: DragEvent) {
     event.preventDefault();
     if (event.dataTransfer?.files.length) {
-      const file = event.dataTransfer.files[0];
-      this.leerImagen(file);
+      this.leerImagen(event.dataTransfer.files[0]);
     }
   }
 
   onImagenSelect(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      const file = input.files[0];
-      this.leerImagen(file);
-    }
+    if (input.files?.length) this.leerImagen(input.files[0]);
   }
 
   leerImagen(file: File) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.ceramicaForm.patchValue({ imagen: reader.result });
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const img = new Image();
+    img.onload = () => {
+      // Tamaño final cuadrado
+      const SIZE = 800;
+      
+      // Tomar la menor dimensión para recortar
+      const minDim = Math.min(img.width, img.height);
+      const sx = (img.width - minDim) / 2;   // Coordenada X para recorte
+      const sy = (img.height - minDim) / 2;  // Coordenada Y para recorte
+
+      const canvas = document.createElement('canvas');
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        // Dibujar la sección recortada redimensionada al tamaño final
+        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
+      }
+
+      // Convertir a Base64
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.7); // Calidad 0.7
+      this.ceramicaForm.patchValue({ imgUrl: dataUrl });
     };
-    reader.readAsDataURL(file);
-  }
+    img.src = event.target?.result as string;
+  };
+  reader.readAsDataURL(file);
+}
+
 }
