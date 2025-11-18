@@ -134,3 +134,129 @@ tbody td {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* Agrega estos estilos a tu modal-factura.css */
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge-ceramica {
+  background: #ffeaa7;
+  color: #d63031;
+}
+
+.badge-cafeteria {
+  background: #74b9ff;
+  color: #0984e3;
+}
+
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-qty {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #667eea;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.btn-qty:hover {
+  background: #764ba2;
+  transform: scale(1.1);
+}
+
+.qty-value {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.btn-eliminar {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 5px;
+}
+
+.btn-eliminar:hover {
+  transform: scale(1.2);
+}
+
+.acciones button span {
+  margin-right: 5px;
+}
+
+.pagar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+tfoot {
+  background: #f5f5f5;
+}
+
+tfoot td {
+  padding: 15px 10px;
+  border-top: 3px solid #667eea;
+}
+
+/* Mejorar submodal */
+.opcion-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 30px;
+  min-width: 150px;
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.opcion-btn .icon {
+  font-size: 48px;
+}
+
+.opcion-btn .texto {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.opcion-btn.ceramicas {
+  background: #ffeaa7;
+  color: #d63031;
+}
+
+.opcion-btn.ceramicas:hover {
+  background: #fdcb6e;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(253, 203, 110, 0.4);
+}
+
+.opcion-btn.cafeteria {
+  background: #74b9ff;
+  color: #0984e3;
+}
+
+.opcion-btn.cafeteria:hover {
+  background: #0984e3;
+  color: white;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(9, 132, 227, 0.4);
+}

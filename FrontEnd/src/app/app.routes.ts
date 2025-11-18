@@ -8,22 +8,25 @@ import { MesasComponent } from './facturacion/mesas/mesas';
 import { ProductosComponent } from './componentes/productos/productos';
 import { CeramicasComponent } from './componentes/ceramicas/ceramicas';
 import { Facturacion } from './componentes/facturacion/facturacion'; 
+import { Ventas } from './facturacion/ventas/ventas';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent }, // 🚫 sin guard
+
+  // 🚫 Login sin protección
+  { path: 'login', component: LoginComponent },
+
+  // ✅ Rutas protegidas
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
   { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AuthGuard] },
   { path: 'mesas', component: MesasComponent, canActivate: [AuthGuard] },
   { path: 'productos', component: ProductosComponent, canActivate: [AuthGuard] },
   { path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: 'home' }, // redirige cualquier ruta desconocida
-  { path: 'mesas', component: MesasComponent, canActivate: [AuthGuard]},
-  { path: 'productos', component: ProductosComponent, canActivate: [AuthGuard]},
-  {path: 'ceramicas', component: CeramicasComponent, canActivate: [AuthGuard]},
-  {path: 'facturacion', component: Facturacion, canActivate: [AuthGuard]}
+  { path: 'facturacion', component: Facturacion, canActivate: [AuthGuard] },
+  { path: 'ventas', component: Ventas, canActivate: [AuthGuard] },
 
-
-
+  // 🚨 EL WILDCARD SIEMPRE VA DE ÚLTIMO
+  { path: '**', redirectTo: 'home' }
 ];
+

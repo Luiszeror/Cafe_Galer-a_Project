@@ -9,38 +9,83 @@
       <thead>
         <tr>
           <th>Producto</th>
+          <th>Tipo</th>
           <th>Cantidad</th>
-          <th>Precio</th>
+          <th>Precio Unit.</th>
+          <th>Subtotal</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Café Americano</td>
-          <td>2</td>
-          <td>$8.000</td>
+        <tr *ngFor="let producto of productosFactura">
+          <td>
+            <strong>{{ producto.name }}</strong>
+            <small *ngIf="producto.description" style="display: block; color: #666; font-size: 12px;">
+              {{ producto.description }}
+            </small>
+          </td>
+          <td>
+            <span class="badge" [class.badge-ceramica]="producto.tipo === 'Cerámicas'" 
+                  [class.badge-cafeteria]="producto.tipo === 'Cafetería'">
+              {{ producto.tipo }}
+            </span>
+          </td>
+          <td>
+            <div class="cantidad-control">
+              <button class="btn-qty" (click)="modificarCantidad(producto, producto.cantidad - 1)">-</button>
+              <span class="qty-value">{{ producto.cantidad }}</span>
+              <button class="btn-qty" (click)="modificarCantidad(producto, producto.cantidad + 1)">+</button>
+            </div>
+          </td>
+          <td>{{ producto.price | currency:'USD':'symbol':'1.0-0' }}</td>
+          <td><strong>{{ calcularSubtotal(producto) | currency:'USD':'symbol':'1.0-0' }}</strong></td>
+          <td>
+            <button class="btn-eliminar" (click)="eliminarProducto(producto)" title="Eliminar">
+              🗑️
+            </button>
+          </td>
         </tr>
-        <tr>
-          <td>Capuccino</td>
-          <td>1</td>
-          <td>$6.500</td>
+        <tr *ngIf="productosFactura.length === 0">
+          <td colspan="6" style="text-align: center; color: #999; padding: 30px;">
+            No hay productos en la factura. Haz clic en "Añadir producto" para comenzar.
+          </td>
         </tr>
       </tbody>
+      <tfoot *ngIf="productosFactura.length > 0">
+        <tr>
+          <td colspan="4" style="text-align: right; font-weight: bold;">Total:</td>
+          <td style="font-weight: bold; font-size: 1.2em; color: #667eea;">
+            {{ calcularTotal() | currency:'USD':'symbol':'1.0-0' }}
+          </td>
+          <td></td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 
   <div class="acciones">
     <button class="cancelar" (click)="cancelar()">Cancelar</button>
-    <button class="anadir" (click)="anadirProducto()">Añadir producto</button>
-    <button class="pagar" (click)="pagar()">Pagar</button>
+    <button class="anadir" (click)="anadirProducto()">
+      <span>➕</span> Añadir producto
+    </button>
+    <button class="pagar" (click)="pagar()" [disabled]="productosFactura.length === 0">
+      <span>💰</span> Pagar
+    </button>
   </div>
 
-  <!-- SUBMODAL -->
-  <div class="submodal-backdrop" *ngIf="mostrarSeleccion">
-    <div class="submodal">
+  <!-- SUBMODAL DE SELECCIÓN -->
+  <div class="submodal-backdrop" *ngIf="mostrarSeleccion" (click)="cerrarSeleccion()">
+    <div class="submodal" (click)="$event.stopPropagation()">
       <h3>Seleccionar tipo de producto</h3>
       <div class="opciones">
-        <button (click)="seleccionarProducto('Cerámicas')">Cerámicas</button>
-        <button (click)="seleccionarProducto('Cafetería')">Cafetería</button>
+        <button class="opcion-btn ceramicas" (click)="seleccionarProducto('Cerámicas')">
+          <span class="icon">🏺</span>
+          <span class="texto">Cerámicas</span>
+        </button>
+        <button class="opcion-btn cafeteria" (click)="seleccionarProducto('Cafetería')">
+          <span class="icon">☕</span>
+          <span class="texto">Cafetería</span>
+        </button>
       </div>
       <button class="cerrar-sub" (click)="cerrarSeleccion()">Cerrar</button>
     </div>

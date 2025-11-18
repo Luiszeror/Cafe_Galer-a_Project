@@ -1,0 +1,203 @@
+<div class="ventas-container">
+  <!-- ACTIVIDAD RECIENTE DEL DÍA -->
+  <section class="actividad-reciente">
+    <div class="header-seccion">
+      <h2> Actividad de Hoy</h2>
+      <button class="btn-gasto" (click)="abrirModalGasto()">
+        💸 Agregar Gasto
+      </button>
+    </div>
+
+    <div class="tabla-wrapper">
+      <table class="tabla-ventas">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Descripción</th>
+            <th>Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let venta of ventasHoy" 
+              [class.gasto]="esGasto(venta)">
+            <td>{{ formatearHora(venta.date) }}</td>
+            <td>{{ construirDescripcion(venta) }}</td>
+            <td [class.negativo]="esGasto(venta)">
+              ${{ venta.totalAmount.toFixed(2) }}
+            </td>
+          </tr>
+          <tr *ngIf="ventasHoy.length === 0">
+            <td colspan="3" class="vacio">No hay actividad registrada hoy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-tabla">
+      <div class="total-dia">
+        <strong>Total del Día:</strong>
+        <span class="monto-total">${{ totalDia.toFixed(2) }}</span>
+      </div>
+      <button class="btn-terminar" (click)="terminarDia()">
+        ✅ Terminar Día
+      </button>
+    </div>
+  </section>
+
+  <!-- CALENDARIO -->
+  <section class="calendario-seccion">
+    <div class="header-calendario">
+      <h2>📅 Historial de Ventas</h2>
+      <div class="controles-calendario">
+        <div class="btn-group">
+          <button 
+            [class.activo]="vistaCalendario === 'semana'"
+            (click)="cambiarVista('semana')">
+            Semana
+          </button>
+          <button 
+            [class.activo]="vistaCalendario === 'mes'"
+            (click)="cambiarVista('mes')">
+            Mes
+          </button>
+        </div>
+        <div class="navegacion">
+          <button (click)="navegarPeriodo('anterior')">◀</button>
+          <span class="periodo-actual">
+            {{ vistaCalendario === 'mes' ? nombreMes() : 'Semana del ' }}
+            {{ fechaSeleccionada.getDate() }}
+          </span>
+          <button (click)="navegarPeriodo('siguiente')">▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⭐ Total del período -->
+    <div class="total-periodo">
+      <span class="label">
+        {{ vistaCalendario === 'semana' ? 'Total de la Semana:' : 'Total del Mes:' }}
+      </span>
+      <span class="monto" [class.negativo]="(vistaCalendario === 'semana' ? totalSemana : totalMes) < 0">
+        ${{ (vistaCalendario === 'semana' ? totalSemana : totalMes).toFixed(2) }}
+      </span>
+    </div>
+
+    <!-- Vista Semana -->
+    <div class="calendario-grid semana" *ngIf="vistaCalendario === 'semana'">
+      <div 
+        *ngFor="let dia of diasSemana"
+        class="dia-card"
+        (click)="verDetalleDia(dia)"
+        [class.hoy]="esHoy(dia.date)">
+        <div class="dia-header">
+          <span class="dia-nombre">{{ formatearFecha(dia.date) }}</span>
+        </div>
+        <div class="dia-total" [class.negativo]="dia.total < 0">
+          ${{ dia.total.toFixed(2) }}
+        </div>
+        <div class="dia-info">
+          <small>{{ dia.ventas.length }} ventas</small>
+          <small *ngIf="dia.gastos.length > 0" class="gastos-count">
+            {{ dia.gastos.length }} gastos
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista Mes -->
+    <div class="calendario-grid mes" *ngIf="vistaCalendario === 'mes'">
+      <div 
+        *ngFor="let dia of diasMes"
+        class="dia-card-mini"
+        (click)="verDetalleDia(dia)"
+        [class.hoy]="esHoy(dia.date)"
+        [class.con-ventas]="dia.ventas.length > 0 || dia.gastos.length > 0">
+        <div class="dia-numero">{{ dia.date.getDate() }}</div>
+        <div class="dia-total-mini" *ngIf="dia.ventas.length > 0 || dia.gastos.length > 0">
+          ${{ dia.total.toFixed(0) }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL GASTO -->
+  <div class="modal-overlay" *ngIf="mostrarModalGasto" (click)="cerrarModalGasto()">
+    <div class="modal-contenido" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>💸 Agregar Gasto</h3>
+        <button class="btn-cerrar" (click)="cerrarModalGasto()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Descripción:</label>
+          <input 
+            type="text" 
+            [(ngModel)]="nuevoGasto.descripcion"
+            placeholder="Ej: Compra de suministros">
+        </div>
+        <div class="form-group">
+          <label>Monto:</label>
+          <input 
+            type="number" 
+            [(ngModel)]="nuevoGasto.monto"
+            placeholder="0.00"
+            min="0"
+            step="0.01">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="cerrarModalGasto()">Cancelar</button>
+        <button class="btn-guardar" (click)="guardarGasto()">Guardar Gasto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DETALLE DÍA -->
+  <div class="modal-overlay" *ngIf="diaDetalleSeleccionado" (click)="cerrarDetalle()">
+    <div class="modal-contenido detalle-dia" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>📋 Detalle del {{ formatearFecha(diaDetalleSeleccionado.date) }}</h3>
+        <button class="btn-cerrar" (click)="cerrarDetalle()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="resumen-dia">
+          <div class="stat">
+            <span class="label">Total del día:</span>
+            <span class="valor" [class.negativo]="diaDetalleSeleccionado.total < 0">
+              ${{ diaDetalleSeleccionado.total.toFixed(2) }}
+            </span>
+          </div>
+          <div class="stat">
+            <span class="label">Ventas:</span>
+            <span class="valor">{{ diaDetalleSeleccionado.ventas.length }}</span>
+          </div>
+          <div class="stat" *ngIf="diaDetalleSeleccionado.gastos.length > 0">
+            <span class="label">Gastos:</span>
+            <span class="valor gastos">{{ diaDetalleSeleccionado.gastos.length }}</span>
+          </div>
+        </div>
+
+        <h4 *ngIf="diaDetalleSeleccionado.ventas.length > 0">✅ Ventas</h4>
+        <div class="lista-items">
+          <div *ngFor="let venta of diaDetalleSeleccionado.ventas" class="item-detalle">
+            <span class="hora">{{ formatearHora(venta.date) }}</span>
+            <span class="descripcion">{{ construirDescripcion(venta) }}</span>
+            <span class="monto-detalle">${{ venta.totalAmount.toFixed(2) }}</span>
+          </div>
+        </div>
+
+        <h4 *ngIf="diaDetalleSeleccionado.gastos.length > 0" class="gastos-titulo">
+          💸 Gastos
+        </h4>
+        <div class="lista-items">
+          <div *ngFor="let gasto of diaDetalleSeleccionado.gastos" class="item-detalle gasto">
+            <span class="hora">{{ formatearHora(gasto.date) }}</span>
+            <span class="descripcion">{{ gasto.customer }}</span>
+            <span class="monto-detalle negativo">${{ gasto.totalAmount.toFixed(2) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
