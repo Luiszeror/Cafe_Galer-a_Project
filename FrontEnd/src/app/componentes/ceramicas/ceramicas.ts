@@ -45,7 +45,7 @@ export class CeramicasComponent implements OnInit {
   ceramicaSeleccionada: Ceramica | null = null;
 
   ceramicaForm: FormGroup;
-  private URL_BACKEND = 'http://localhost:4000/api/ceramics';
+  private URL_BACKEND = 'https://backgaleriacafe.onrender.com/api/ceramics';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.ceramicaForm = this.fb.group({

@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class Dashboard implements OnInit {
 
-  private apiUrl = 'http://localhost:4000/api/sales'; // <-- Backend Node/Mongo
+  private apiUrl = 'https://backgaleriacafe.onrender.com/api/sales'; // <-- Backend Node/Mongo
 
   ventas: any[] = [];
   totalVentas = 0;

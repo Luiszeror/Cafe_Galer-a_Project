@@ -21,6 +21,7 @@ interface Sale {
   customer: string;
   date: Date;
   isExpense?: boolean;
+  dayFinished?: boolean; // 👈 NUEVO
 }
 
 interface DaySummary {
@@ -38,11 +39,12 @@ interface DaySummary {
   styleUrls: ['./ventas.css']
 })
 export class Ventas implements OnInit {
-  private apiUrl = 'http://localhost:4000/api/sales';
+  private apiUrl = 'https://backgaleriacafe.onrender.com/api/sales';
   
   // Actividad reciente del día
   ventasHoy: Sale[] = [];
   totalDia: number = 0;
+  diaTerminado: boolean = false; // 👈 NUEVO
   
   // Modal para agregar gasto
   mostrarModalGasto: boolean = false;
@@ -62,12 +64,36 @@ export class Ventas implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
+    this.verificarDiaTerminado(); // 👈 NUEVO
     this.cargarVentasHoy();
     this.cargarCalendario();
   }
 
+  // ========== VERIFICAR SI EL DÍA YA TERMINÓ ==========
+  verificarDiaTerminado() {
+    const fechaTerminado = localStorage.getItem('diaTerminado');
+    const hoy = new Date().toDateString();
+    
+    if (fechaTerminado === hoy) {
+      this.diaTerminado = true;
+      this.ventasHoy = [];
+      this.totalDia = 0;
+    } else if (fechaTerminado && fechaTerminado !== hoy) {
+      // Si es un nuevo día, limpiamos el flag
+      localStorage.removeItem('diaTerminado');
+      this.diaTerminado = false;
+    }
+  }
+
   // ========== ACTIVIDAD RECIENTE ==========
   cargarVentasHoy() {
+    // Si el día ya terminó, no cargamos ventas
+    if (this.diaTerminado) {
+      this.ventasHoy = [];
+      this.totalDia = 0;
+      return;
+    }
+
     const hoy = new Date();
     const inicio = new Date(hoy.setHours(0, 0, 0, 0)).toISOString();
     hoy.setHours(23, 59, 59, 999);
@@ -76,6 +102,7 @@ export class Ventas implements OnInit {
     this.http.get<Sale[]>(`${this.apiUrl}?start=${inicio}&end=${fin}`)
       .subscribe({
         next: (ventas) => {
+          // Solo mostramos las del día actual si no ha terminado
           this.ventasHoy = ventas.sort((a, b) => 
             new Date(b.date).getTime() - new Date(a.date).getTime()
           );
@@ -86,10 +113,11 @@ export class Ventas implements OnInit {
   }
 
   calcularTotalDia() {
-  this.totalDia = Math.round(
-    this.ventasHoy.reduce((sum, v) => sum + v.totalAmount, 0)
-  );
-}
+    this.totalDia = Math.round(
+      this.ventasHoy.reduce((sum, v) => sum + v.totalAmount, 0)
+    );
+  }
+
   construirDescripcion(venta: Sale): string {
     if (venta.isExpense || venta.totalAmount < 0) {
       return venta.customer || 'Gasto';
@@ -111,6 +139,10 @@ export class Ventas implements OnInit {
 
   // ========== GASTOS ==========
   abrirModalGasto() {
+    if (this.diaTerminado) {
+      alert('El día ya ha sido cerrado. No se pueden agregar más gastos.');
+      return;
+    }
     this.mostrarModalGasto = true;
     this.nuevoGasto = { descripcion: '', monto: 0 };
   }
@@ -125,11 +157,10 @@ export class Ventas implements OnInit {
       return;
     }
 
-    // ⭐ Crear gasto con el formato correcto para el backend
     const gasto = {
       products: [],
       ceramics: [],
-      totalAmount: -Math.abs(this.nuevoGasto.monto), // Negativo
+      totalAmount: -Math.abs(this.nuevoGasto.monto),
       customer: this.nuevoGasto.descripcion,
       date: new Date().toISOString(),
       isExpense: true
@@ -153,6 +184,11 @@ export class Ventas implements OnInit {
 
   // ========== TERMINAR DÍA ==========
   terminarDia() {
+    if (this.diaTerminado) {
+      alert('El día ya ha sido terminado.');
+      return;
+    }
+
     const gastosPendientes = this.ventasHoy.filter(v => this.esGasto(v) && !v._id);
     
     if (gastosPendientes.length > 0) {
@@ -164,12 +200,16 @@ export class Ventas implements OnInit {
       return;
     }
     
-    // Las ventas y gastos ya están guardados en la BD
+    // 👇 GUARDAR EN LOCALSTORAGE QUE EL DÍA TERMINÓ
+    const hoy = new Date().toDateString();
+    localStorage.setItem('diaTerminado', hoy);
+    
+    this.diaTerminado = true;
     this.ventasHoy = [];
     this.totalDia = 0;
     
     alert('¡Día terminado! Todas las ventas y gastos están en el historial.');
-    this.cargarCalendario(); // Refrescar el calendario
+    this.cargarCalendario();
   }
 
   // ========== CALENDARIO ==========
@@ -239,36 +279,32 @@ export class Ventas implements OnInit {
       });
   }
 
-  // En tu componente, reemplaza procesarVentasCalendario con:
-procesarVentasCalendario(ventas: Sale[], dias: DaySummary[]) {
-  // Primero limpia los totales
-  dias.forEach(d => d.total = 0);
-  
-  // Luego procesa las ventas
-  ventas.forEach(venta => {
-    const fechaVenta = new Date(venta.date);
-    const dia = dias.find(d => 
-      d.date.toDateString() === fechaVenta.toDateString()
-    );
+  procesarVentasCalendario(ventas: Sale[], dias: DaySummary[]) {
+    dias.forEach(d => d.total = 0);
+    
+    ventas.forEach(venta => {
+      const fechaVenta = new Date(venta.date);
+      const dia = dias.find(d => 
+        d.date.toDateString() === fechaVenta.toDateString()
+      );
 
-    if (dia) {
-      if (this.esGasto(venta)) {
-        dia.gastos.push(venta);
-      } else {
-        dia.ventas.push(venta);
+      if (dia) {
+        if (this.esGasto(venta)) {
+          dia.gastos.push(venta);
+        } else {
+          dia.ventas.push(venta);
+        }
+        dia.total += venta.totalAmount;
       }
-      dia.total += venta.totalAmount;
-    }
-  });
+    });
 
-  // Calcula los totales del período
-  this.calcularTotalesPeriodo(dias);
-}
+    this.calcularTotalesPeriodo(dias);
+  }
 
-calcularTotalesPeriodo(dias: DaySummary[]) {
-  this.totalSemana = Math.round(dias.reduce((sum, d) => sum + d.total, 0));
-  this.totalMes = Math.round(dias.reduce((sum, d) => sum + d.total, 0));
-}
+  calcularTotalesPeriodo(dias: DaySummary[]) {
+    this.totalSemana = Math.round(dias.reduce((sum, d) => sum + d.total, 0));
+    this.totalMes = Math.round(dias.reduce((sum, d) => sum + d.total, 0));
+  }
 
   cambiarVista(vista: 'semana' | 'mes') {
     this.vistaCalendario = vista;
@@ -294,6 +330,42 @@ calcularTotalesPeriodo(dias: DaySummary[]) {
 
   cerrarDetalle() {
     this.diaDetalleSeleccionado = null;
+  }
+
+  // ========== FORMATO DE FECHAS MEJORADO ==========
+  
+  // 👇 Para el título de la vista
+  tituloVista(): string {
+    if (this.vistaCalendario === 'semana') {
+      return this.tituloSemana();
+    } else {
+      return this.tituloMes();
+    }
+  }
+
+  // 👇 "Semana del 18 al 24 de Noviembre 2025"
+  tituloSemana(): string {
+    if (this.diasSemana.length === 0) return '';
+    
+    const primerDia = this.diasSemana[0].date;
+    const ultimoDia = this.diasSemana[6].date;
+    
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    
+    const mes = meses[primerDia.getMonth()];
+    const año = primerDia.getFullYear();
+    
+    return `Semana del ${primerDia.getDate()} al ${ultimoDia.getDate()} de ${mes} ${año}`;
+  }
+
+  // 👇 "Noviembre 2025"
+  tituloMes(): string {
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const mes = meses[this.fechaSeleccionada.getMonth()];
+    const año = this.fechaSeleccionada.getFullYear();
+    return `${mes} ${año}`;
   }
 
   nombreMes(): string {

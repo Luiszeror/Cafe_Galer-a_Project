@@ -47,7 +47,7 @@ export class ProductosComponent {
   productoSeleccionado: Producto | null = null;
   productoForm: FormGroup;
 
-  private URL_BACKEND = 'http://localhost:4000/api/products'; // 👈 tu backend local o remoto
+  private URL_BACKEND = 'https://backgaleriacafe.onrender.com/api/products'; // 👈 tu backend local o remoto
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.productoForm = this.fb.group({

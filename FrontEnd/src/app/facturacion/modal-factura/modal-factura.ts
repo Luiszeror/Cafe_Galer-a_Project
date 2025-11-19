@@ -179,7 +179,7 @@ export class ModalFacturaComponent {
     console.log('📤 Enviando venta al backend:', saleData);
 
     // POST al backend para crear la venta
-    this.http.post('http://localhost:4000/api/sales', saleData)
+    this.http.post('https://backgaleriacafe.onrender.com/api/sales', saleData)
       .subscribe({
         next: (response) => {
           console.log('✅ Venta registrada:', response);
@@ -208,7 +208,7 @@ export class ModalFacturaComponent {
   // Método auxiliar para eliminar cerámicas vendidas
   private async eliminarCeramicasVendidas(ceramicas: ProductoFactura[]): Promise<void> {
     const promesas = ceramicas.map(ceramica => {
-      return this.http.delete(`http://localhost:4000/api/ceramics/${ceramica._id}`)
+      return this.http.delete(`https://backgaleriacafe.onrender.com/api/ceramics/${ceramica._id}`)
         .toPromise()
         .catch(err => {
           console.error(`Error al eliminar cerámica ${ceramica.name}:`, err);

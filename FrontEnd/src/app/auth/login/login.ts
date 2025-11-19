@@ -17,7 +17,7 @@ export class LoginComponent {
   errorMessage: string = '';
 
   // URL de tu backend
-  private apiUrl = 'http://localhost:4000/api/auth/login';
+  private apiUrl = 'https://backgaleriacafe.onrender.com/api/auth/login';
 
   constructor(private http: HttpClient, private router: Router) {}
 

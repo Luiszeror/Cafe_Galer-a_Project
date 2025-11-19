@@ -394,8 +394,8 @@ export class ModalSeleccionProductosComponent implements OnInit {
   cargando = false;
 
   // URLs de tu backend (puerto 4000)
-  private URL_PRODUCTOS = 'http://localhost:4000/api/products';
-  private URL_CERAMICAS = 'http://localhost:4000/api/ceramics';
+  private URL_PRODUCTOS = 'https://backgaleriacafe.onrender.com/api/products';
+  private URL_CERAMICAS = 'https://backgaleriacafe.onrender.com/api/ceramics';
 
   constructor(
     public dialogRef: MatDialogRef<ModalSeleccionProductosComponent>,

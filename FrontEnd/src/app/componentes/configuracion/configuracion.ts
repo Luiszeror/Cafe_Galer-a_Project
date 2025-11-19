@@ -32,8 +32,8 @@ export class ConfiguracionComponent implements OnInit {
   nuevoUsuario: Usuario = { name: '', email: '', password: '', role: 'empleado' };
   confirmPassword: string = ''; // confirmación de contraseña
 
-  private URL_REGISTER = 'http://localhost:4000/api/auth/register';
-  private URL_USERS = 'http://localhost:4000/api/auth/users';
+  private URL_REGISTER = 'https://backgaleriacafe.onrender.com/api/auth/register';
+  private URL_USERS = 'https://backgaleriacafe.onrender.com/api/auth/users';
 
   constructor(private http: HttpClient) {}
 
@@ -103,7 +103,7 @@ eliminarUsuario(usuario: Usuario) {
 
   if (!confirm(`❌ ¿Estás seguro que quieres eliminar a ${usuario.name}?`)) return;
 
-  this.http.delete<{ msg: string }>(`http://localhost:4000/api/auth/users/${usuario._id}`)
+  this.http.delete<{ msg: string }>(`https://backgaleriacafe.onrender.com/api/auth/users/${usuario._id}`)
     .pipe(
       catchError(err => {
         console.error('Error al eliminar usuario', err);

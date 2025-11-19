@@ -2,10 +2,15 @@
   <!-- ACTIVIDAD RECIENTE DEL DÍA -->
   <section class="actividad-reciente">
     <div class="header-seccion">
-      <h2> Actividad de Hoy</h2>
-      <button class="btn-gasto" (click)="abrirModalGasto()">
+      <h2>📊 Actividad de Hoy</h2>
+      <button class="btn-gasto" (click)="abrirModalGasto()" [disabled]="diaTerminado">
         💸 Agregar Gasto
       </button>
+    </div>
+
+    <!-- ⭐ Mensaje si el día ya terminó -->
+    <div class="alerta-info" *ngIf="diaTerminado">
+      ✅ El día ha sido cerrado. Las ventas están en el historial.
     </div>
 
     <div class="tabla-wrapper">
@@ -27,7 +32,9 @@
             </td>
           </tr>
           <tr *ngIf="ventasHoy.length === 0">
-            <td colspan="3" class="vacio">No hay actividad registrada hoy</td>
+            <td colspan="3" class="vacio">
+              {{ diaTerminado ? 'Día cerrado - Ver historial abajo' : 'No hay actividad registrada hoy' }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -38,8 +45,8 @@
         <strong>Total del Día:</strong>
         <span class="monto-total">${{ totalDia.toFixed(2) }}</span>
       </div>
-      <button class="btn-terminar" (click)="terminarDia()">
-        ✅ Terminar Día
+      <button class="btn-terminar" (click)="terminarDia()" [disabled]="diaTerminado">
+        {{ diaTerminado ? '✅ Día Cerrado' : '✅ Terminar Día' }}
       </button>
     </div>
   </section>
@@ -63,10 +70,8 @@
         </div>
         <div class="navegacion">
           <button (click)="navegarPeriodo('anterior')">◀</button>
-          <span class="periodo-actual">
-            {{ vistaCalendario === 'mes' ? nombreMes() : 'Semana del ' }}
-            {{ fechaSeleccionada.getDate() }}
-          </span>
+          <!-- ⭐ Aquí está el cambio principal -->
+          <span class="periodo-actual">{{ tituloVista() }}</span>
           <button (click)="navegarPeriodo('siguiente')">▶</button>
         </div>
       </div>
@@ -196,8 +201,11 @@
             <span class="monto-detalle negativo">${{ gasto.totalAmount.toFixed(2) }}</span>
           </div>
         </div>
+
+        <div *ngIf="diaDetalleSeleccionado.ventas.length === 0 && diaDetalleSeleccionado.gastos.length === 0" class="sin-datos">
+          No hay actividad registrada en este día
+        </div>
       </div>
     </div>
   </div>
 </div>
-
