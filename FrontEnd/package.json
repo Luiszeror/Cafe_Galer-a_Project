@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "serve": "npx http-server dist/front-end/browser -p 8080"
   },
   "prettier": {
     "printWidth": 100,
@@ -31,6 +32,7 @@
     "@angular/material": "^20.2.12",
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
+    "http-server": "^14.1.1",
     "rxjs": "~7.8.0",
     "three": "^0.181.0",
     "tslib": "^2.3.0",
