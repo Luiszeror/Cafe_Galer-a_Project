@@ -62,7 +62,7 @@ export class Dashboard implements OnInit {
         // 🕓 Última venta positiva
         if (ventasPositivas.length > 0) {
           const ultima = ventasPositivas[ventasPositivas.length - 1];
-          this.actividadReciente = `Última venta a ${ultima.customer} por $${ultima.totalAmount.toFixed(2)} USD`;
+          this.actividadReciente = `Última venta a ${ultima.customer} por $${ultima.totalAmount.toFixed(2)} COP`;
         } else {
           this.actividadReciente = 'Sin ventas registradas';
         }
